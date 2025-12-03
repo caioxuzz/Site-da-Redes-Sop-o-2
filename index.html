@@ -1,0 +1,234 @@
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Projeto Social Redes 3</title>
+  <link rel="website icon" type="png" href="img/Imagem do WhatsApp de 2025-12-02 à(s) 23.40.10_878d92dd (1).png">
+  <meta name="description" content="Site para arrecadação de doações via PIX e alimentos - rápido, responsivo e fácil de usar." />
+  <style>
+    :root{
+      --accent:#0ea5a4; /* teal */
+      --dark:#0f172a;
+      --muted:#64748b;
+      --card:#0b1220;
+      --glass: rgba(255,255,255,0.03);
+    }
+    *{box-sizing:border-box}
+    body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; margin:0; background:linear-gradient(180deg,#071025 0%, #071822 60%); color:#e6eef6; -webkit-font-smoothing:antialiased}
+    header{display:flex;align-items:center;justify-content:space-between;padding:20px 28px}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#000000);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;color:rgb(255, 255, 255);box-shadow:0 6px 18px rgba(2,6,23,0.6)}
+    h1.hero{font-size: clamp(20px, 4.8vw, 36px); margin:0 0 8px}
+    p.lead{color:var(--muted);margin:0 0 18px}
+    main{padding:28px}
+    .container{max-width:1100px;margin:0 auto}
+
+    .hero-card{display:grid;grid-template-columns:1fr 380px;gap:22px;align-items:center;margin-bottom:26px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:22px;border-radius:14px;box-shadow:0 6px 30px rgba(2,6,23,0.55);border:1px solid rgba(255,255,255,0.03)}
+
+    .donation-box{display:flex;flex-direction:column;gap:12px}
+    .pix-key{background:var(--glass);padding:12px;border-radius:10px;display:flex;align-items:center;justify-content:space-between}
+    .pix-key span{font-family:monospace;font-weight:600}
+    .btn{background:var(--accent);color:#042024;border:none;padding:10px 14px;border-radius:10px;font-weight:600;cursor:pointer}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--accent)}
+
+    ul.allowed{margin:0;padding-left:18px;color:var(--muted)}
+    ul.allowed li{margin:8px 0}
+
+    .steps{display:flex;gap:10px;flex-wrap:wrap}
+    .step{flex:1;min-width:160px;background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));padding:12px;border-radius:10px;text-align:center}
+    .step h4{margin:6px 0 2px}
+    .note{font-size:13px;color:var(--muted)}
+
+    footer{padding:26px 28px;text-align:center;color:var(--muted);font-size:14px}
+
+    /* floating whatsapp */
+    .whatsapp-fab{position:fixed;right:18px;bottom:18px;width:62px;height:62px;border-radius:999px;background:linear-gradient(180deg,#25D366,#128C7E);display:flex;align-items:center;justify-content:center;box-shadow:0 12px 30px rgba(2,6,23,0.65);z-index:1000;border:2px solid rgba(255,255,255,0.06)}
+    .whatsapp-fab svg{width:28px;height:28px;filter:drop-shadow(0 6px 18px rgba(0,0,0,0.35))}
+
+    /* modal */
+    .modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(2,6,23,0.6);z-index:2000;visibility:hidden;opacity:0;transition:opacity .18s}
+    .modal.open{visibility:visible;opacity:1}
+    .modal-card{width:420px;max-width:94%;background:linear-gradient(180deg,#07172a,#04202b);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+    .modal-card h3{margin:6px 0 10px}
+
+    /* responsive */
+    @media (max-width:880px){
+      .hero-card{grid-template-columns:1fr;}
+      .logo{width:46px;height:46px}
+    }
+
+    /* small animations */
+    .pulse{animation:pulse 2.2s infinite}
+    @keyframes pulse{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
+  </style>
+</head>
+<body>
+  <header class="container">
+    <div class="brand">
+      <div class="logo">
+    <img src="img/Imagem do WhatsApp de 2025-12-02 à(s) 23.40.10_878d92dd (1).png" alt="Logo do projeto" style="width:100%;height:100%;object-fit:contain;">
+</div>
+      <div>
+        <div style="font-weight:700">Projeto Social</div>
+        <div style="font-size:13px;color:var(--muted)">Arrecadação via PIX + alimentos</div>
+      </div>
+    </div>
+    <nav style="display:flex;gap:10px;align-items:center">
+      <button class="btn ghost" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">Sobre</button>
+      <button class="btn" onclick="openPixModal()">Doar via PIX</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero-card">
+      <div class="card">
+        <h1 class="hero">Junte-se a nós: ajude quem precisa</h1>
+        <p class="lead">Doações em dinheiro por PIX ou doações de alimentos —  seguro e transparente. Sua contribuição faz a diferença.</p>
+
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <div class="card" style="flex:1;min-width:220px">
+            <h3>Como doar via PIX</h3>
+            <div class="donation-box">
+              <div class="pix-key">
+                <div>
+                  <div style="font-size:12px;color:var(--muted)">Chave PIX (CPF)</div>
+                  <p class="pix-key">096.319.873-45</p>
+                </div>
+                <div style="display:flex;gap:8px">
+                  <button class="btn" onclick="copyPix()">Copiar</button>
+                  <button class="btn ghost" onclick="openPixModal()">Mostrar instruções</button>
+                </div>
+              </div>
+              <div class="note">Atenção: Recebemos apenas doações em dinheiro via PIX nesta chave. Não receba pedidos de outras chaves em nosso nome.</div>
+            </div>
+          </div>
+
+          <div class="card" style="min-width:220px">
+            <h3>Doação de alimentos</h3>
+            <p class="note">Aceitamos apenas os itens listados abaixo. Para doar, clique no botão do WhatsApp (canto inferior direito) e combine a entrega.</p>
+            <ul class="allowed">
+              <li>Arroz</li>
+              <li>Feijão</li>
+              <li>Macarrão</li>
+              <li>Carne (fresca/congelada, informar ao combinar)</li>
+              <li>Legumes</li>
+              <li>Polpas de sucos</li>
+            </ul>
+            <div style="margin-top:10px">
+              <button class="btn" onclick="openWhatsApp('Olá, quero doar alimentos. Gostaria de combinar a entrega.')">Doar alimentos (WhatsApp)</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <aside class="card" style="display:flex;flex-direction:column;gap:12px">
+        <h3 style="margin-top:2px">Transparência</h3>
+        <p class="note">Publicamos relatórios semanais das doações e do que foi entregue. Quer ver as últimas ações? Entre em contato pelo WhatsApp.</p>
+
+        <div style="background:linear-gradient(180deg,#052935,#072638);padding:12px;border-radius:10px">
+          <h4 style="margin:0 0 6px">Passos rápidos</h4>
+          <div class="steps">
+            <div class="step">
+              <div style="font-size:22px">1</div>
+              <h4>PIX</h4>
+              <div class="note">Copie a chave e pague via seu banco/Carteira</div>
+            </div>
+            <div class="step">
+              <div style="font-size:22px">2</div>
+              <h4>Confirmação</h4>
+              <div class="note">Envie comprovante pelo WhatsApp</div>
+            </div>
+            <div class="step">
+              <div style="font-size:22px">3</div>
+              <h4>Distribuição</h4>
+              <div class="note">Recebedores cadastrados recebem a entrega</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:8px;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-size:12px;color:var(--muted)">Contato para alimentos</div>
+            <div style="font-weight:700">(85) 9 9788-7354 (WhatsApp)</div>
+          </div>
+          <button class="btn" onclick="openWhatsApp('Olá, quero combinar doação de alimentos')">Chamar</button>
+        </div>
+
+      </aside>
+    </section>
+
+    <section id="about" class="card">
+      <h2>Sobre o projeto</h2>
+      <p class="note">A Iniciativa Nutricional Comunitária é um projeto social criado pela turma do terceiro ano de Redes de Computadores para apoiar pessoas em situação de vulnerabilidade. Nosso objetivo é oferecer um “Sopão Solidário” a moradores de rua e famílias que enfrentam insegurança alimentar, levando não apenas alimento, mas também dignidade e esperança. Para realizar esta ação, contamos com doações de alimentos e contribuições financeiras, fundamentais para aquisição de ingredientes e logística. Cada ajuda fortalece nosso compromisso com uma comunidade mais justa e solidária. Com união, responsabilidade e empatia, seguimos trabalhando para ampliar nosso impacto. Junte-se a nós seu gesto faz a diferença.
+Junte-se a nós nessa causa. Seu gesto pode salvar vidas.</p>
+    </section>
+
+  </main>
+
+  <footer>
+     — confirme todas as informações antes de divulgar. PIX: <strong id="pixFooter">096.319.873-45</strong>
+  </footer>
+
+  <!-- floating whatsapp button -->
+  <a id="waFab" class="whatsapp-fab" href="https://wa.me/5585997887354?text=Ol%C3%A1%2C%20gostaria%20de%20ajudar" target="_blank" rel="noopener" aria-label="Abrir WhatsApp">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20.52 3.478A11.848 11.848 0 0012 .25c-6.55 0-11.87 5.32-11.87 11.87 0 2.093.545 4.106 1.578 5.9L.5 23.5l5.59-1.5a11.81 11.81 0 005.91 1.5c6.55 0 11.87-5.32 11.87-11.87 0-3.17-1.24-6.145-3.79-8.6z" fill="#fff" opacity=".06"/><path d="M17.472 14.382c-.29-.146-1.712-.844-1.977-.94-.266-.096-.46-.146-.655.146-.195.293-.754.94-.924 1.13-.17.195-.34.219-.63.073-.29-.146-1.225-.452-2.333-1.436-.863-.768-1.446-1.717-1.616-2.01-.17-.293-.018-.45.128-.597.13-.129.29-.34.439-.51.146-.171.195-.293.292-.488.098-.195.049-.366-.024-.512-.073-.146-.655-1.58-.897-2.16-.236-.57-.477-.49-.655-.5l-.562-.01c-.195 0-.512.073-.78.366-.268.293-1.02 1-1.02 2.438 0 1.437 1.042 2.82 1.187 3.015.146.195 2.05 3.13 4.97 4.385 2.187 1.02 3.133 1.058 3.387.99.244-.07 1.58-.644 1.8-1.266.219-.622.219-1.155.153-1.266-.073-.111-.266-.17-.555-.317z" fill="#fff"/></svg>
+  </a>
+
+  <!-- PIX modal -->
+  <div id="pixModal" class="modal" onclick="if(event.target===this) closePixModal()">
+    <div class="modal-card">
+      <h3>Doação via PIX</h3>
+      <p class="note">Use a chave abaixo na sua carteira/banco. Após o pagamento, envie o comprovante pelo WhatsApp para confirmar.</p>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+        <div>
+          <div style="font-size:12px;color:var(--muted)">Chave PIX (CPF)</div>
+          <div style="font-weight:700;font-family:monospace;margin-top:6px" id="pixModalKey">096.319.873-45</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <button class="btn" onclick="copyPix(true)">Copiar chave</button>
+          <a class="btn ghost" href="https://wa.me/5585997887354?text=Acabei%20de%20doar%20via%20PIX.%20Segue%20o%20comprovante." target="_blank" rel="noopener">Enviar comprovante</a>
+        </div>
+      </div>
+      <div style="margin-top:12px;font-size:13px;color:var(--muted)">Observação: não compartilhamos dados sensíveis publicamente. Guarde seu comprovante.</div>
+      <div style="display:flex;justify-content:flex-end;margin-top:12px">
+        <button class="btn ghost" onclick="closePixModal()">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // configuration (edite se necessário)
+    const PIX_KEY = '096631987345';
+    const WHATS_NUMBER = '5585997887354'; // formato internacional sem +
+
+    // set values
+    document.getElementById('pixKey').textContent = PIX_KEY;
+    document.getElementById('pixModalKey').textContent = PIX_KEY;
+    document.getElementById('pixFooter').textContent = PIX_KEY;
+    document.getElementById('waFab').href = `https://wa.me/${WHATS_NUMBER}?text=Ol%C3%A1%2C%20gostaria%20de%20ajudar`;
+
+    function copyPix(fromModal){
+      navigator.clipboard.writeText(PIX_KEY).then(()=>{
+        const msg = document.createElement('div');
+        msg.textContent = 'Chave copiada para a área de transferência!';
+        Object.assign(msg.style,{position:'fixed',left:'50%',top:'18px',transform:'translateX(-50%)',background:'#042024',padding:'10px 14px',borderRadius:'8px',boxShadow:'0 8px 30px rgba(1,5,12,0.6)',zIndex:9999});
+        document.body.appendChild(msg);
+        setTimeout(()=>msg.remove(),2000);
+      }).catch(()=>alert('Não foi possível copiar automaticamente. Selecione e copie manualmente: ' + PIX_KEY));
+    }
+
+    function openPixModal(){document.getElementById('pixModal').classList.add('open');}
+    function closePixModal(){document.getElementById('pixModal').classList.remove('open');}
+
+    function openWhatsApp(message){
+      const encoded = encodeURIComponent(message);
+      window.open(`https://wa.me/${WHATS_NUMBER}?text=${encoded}`,'_blank');
+    }
+
+    // small accessibility: allow Esc to close modal
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') closePixModal(); });
+  </script>
+</body>
+</html>
