@@ -61,6 +61,40 @@
     /* small animations */
     .pulse{animation:pulse 2.2s infinite}
     @keyframes pulse{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
+    /* === EFEITO NEON EM TODOS OS BOTÕES === */
+.btn, .whatsapp-fab, nav button {
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.25s ease, transform 0.15s ease;
+}
+
+/* brilho neon no hover */
+.btn:hover, nav button:hover {
+  box-shadow: 0 0 18px rgba(14,165,164,0.75), 0 0 32px rgba(14,165,164,0.45);
+}
+
+/* clique causa pulso */
+.btn:active, nav button:active {
+  transform: scale(0.96);
+  box-shadow: 0 0 25px rgba(14,165,164,0.95), 0 0 50px rgba(14,165,164,0.6);
+}
+
+/* efeito neon no botão flutuante do WhatsApp */
+.whatsapp-fab:hover {
+  box-shadow: 
+      0 0 12px rgba(37,211,102,0.9),
+      0 0 26px rgba(37,211,102,0.6),
+      0 0 46px rgba(37,211,102,0.4);
+  transform: scale(1.05);
+}
+
+.whatsapp-fab:active {
+  transform: scale(0.92);
+  box-shadow: 
+      0 0 20px rgba(37,211,102,1),
+      0 0 50px rgba(37,211,102,0.7);
+}
+
   </style>
 </head>
 <body>
@@ -231,4 +265,5 @@ Junte-se a nós nessa causa. Seu gesto pode salvar vidas.</p>
     document.addEventListener('keydown', e=>{ if(e.key==='Escape') closePixModal(); });
   </script>
 </body>
+
 </html>
